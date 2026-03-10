@@ -928,7 +928,7 @@ tbody tr { animation:rowIn 0.15s ease both; }
  <div class="topbar">
  <div class="page-title" id="page-title">Dashboard</div>
  <div class="topbar-actions">
- <div class="topbar-btn" id="apikey-btn" onclick="openApiKeyModal()" title="Configure Groq API Key" style="display:none;">
+ <div class="topbar-btn" id="apikey-btn" onclick="openApiKeyModal()" title="Configure Groq API Key" style="display:flex;">
    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
  </div>
  <div class="topbar-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle Theme">
@@ -2945,17 +2945,12 @@ function openApiKeyModal() {
 }
 
 function initApiKey() {
-  const isLocal = location.hostname==='localhost' || location.hostname==='127.0.0.1' || location.protocol==='file:';
   const btn = document.getElementById('apikey-btn');
-  if(isLocal) {
-    if(btn) btn.style.display = 'flex';
-    window._mtApiKey = localStorage.getItem('mt-apikey') || '';
-    if(!window._mtApiKey) {
-      setTimeout(() => showToast('Local mode: click the key icon in the topbar to set your Google AI Studio key for AI features'), 2500);
-    }
-  } else {
-    if(btn) btn.style.display = 'none';
-    window._mtApiKey = '';
+  // Always show key icon — works on localhost AND GitHub Pages
+  if(btn) btn.style.display = 'flex';
+  window._mtApiKey = localStorage.getItem('mt-apikey') || '';
+  if(!window._mtApiKey) {
+    setTimeout(() => showToast('Click the key icon in the topbar to enter your Groq API key'), 2500);
   }
 }
 
