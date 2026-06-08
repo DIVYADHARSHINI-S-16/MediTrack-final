@@ -3869,8 +3869,8 @@ function renderAlerts(){
   const all=computeAlerts();
   // Update stat cards on the alerts page
   const sa=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v;};
-  sa('a-expired',  all.filter(a=>a.type==='expired').length);
-  sa('a-near',     all.filter(a=>a.type==='warning'||a.type==='urgent').length);
+  sa('a-expired',  all.filter(a=>a.type==='expired'||a.type==='darkred').length);
+  sa('a-near',     all.filter(a=>a.type==='lightred'||a.type==='yellow').length);
   sa('a-lowstock', all.filter(a=>a.type==='lowstock').length);
   sa('a-total',    all.length);
   let alerts=all;
@@ -5919,24 +5919,21 @@ function _formatAlertWhatsApp(report, isTest) {
   msg += '\n*' + total + ' Alert' + (total !== 1 ? 's' : '') + ' Found*\n';
   if (report.expired.length) {
     msg += '\n🚨 *EXPIRED (' + report.expired.length + ')*\n';
-    report.expired.slice(0, 5).forEach(function(b) {
+    report.expired.forEach(function(b) {
       msg += '• ' + b.medicine + ' — Batch ' + b.batch + ' (Exp: ' + b.expiry + ', Qty: ' + b.qty + ')\n';
     });
-    if (report.expired.length > 5) msg += '  _+ ' + (report.expired.length - 5) + ' more_\n';
   }
   if (report.expiringSoon.length) {
     msg += '\n⏰ *EXPIRING SOON (' + report.expiringSoon.length + ')*\n';
-    report.expiringSoon.slice(0, 5).forEach(function(b) {
+    report.expiringSoon.forEach(function(b) {
       msg += '• ' + b.medicine + ' — ' + b.days_left + 'd left (Batch ' + b.batch + ', Qty: ' + b.qty + ')\n';
     });
-    if (report.expiringSoon.length > 5) msg += '  _+ ' + (report.expiringSoon.length - 5) + ' more_\n';
   }
   if (report.lowStock.length) {
     msg += '\n📦 *LOW STOCK (' + report.lowStock.length + ')*\n';
-    report.lowStock.slice(0, 5).forEach(function(m) {
+    report.lowStock.forEach(function(m) {
       msg += '• ' + m.name + ' — ' + m.total_qty + '/' + m.threshold + ' units (' + m.category + ')\n';
     });
-    if (report.lowStock.length > 5) msg += '  _+ ' + (report.lowStock.length - 5) + ' more_\n';
   }
   msg += '\nLog into MediTrack to take action.';
   return msg;
@@ -5954,8 +5951,8 @@ function sendTest(ch) {
 // ════════════════════════════════════════════════════════════════
 var ALERT_RECIPIENTS = [
   { email: 'divyadharshinis1610@gmail.com', role: 'Admin',      name: 'Admin' },
-  { email: 'geethagnanaprakasam3@gmail.com', role: 'Supplier',  name: 'Supplier' },
-  { email: 'ramsundar.jagan@gmail.com',      role: 'Pharmacist', name: 'Pharmacist' },
+  { email: 'dd6736339@gmail.com', role: 'Supplier',  name: 'Supplier' },
+  { email: 'saruna151977@gmail.com',      role: 'Pharmacist', name: 'Pharmacist' },
 ];
 
 // ════════════════════════════════════════════════════════════════
@@ -5974,9 +5971,9 @@ function getEmailJSConfig() {
   try {
     var cfg = JSON.parse(localStorage.getItem('mt-emailjs-config') || '{}');
     return {
-      serviceId:  cfg.serviceId  || (document.getElementById('ejs-service-id')?.value  || '').trim(),
-      templateId: cfg.templateId || (document.getElementById('ejs-template-id')?.value || '').trim(),
-      publicKey:  cfg.publicKey  || (document.getElementById('ejs-public-key')?.value  || '').trim(),
+      serviceId:  cfg.serviceId  || (document.getElementById('ejs-service-id')?.value  || '').trim() || 'service_0ex54at',
+      templateId: cfg.templateId || (document.getElementById('ejs-template-id')?.value || '').trim() || 'template_tljj6df',
+      publicKey:  cfg.publicKey  || (document.getElementById('ejs-public-key')?.value  || '').trim() || '_k4v1wvnTd5K8fjFi',
     };
   } catch(e) { return {}; }
 }
